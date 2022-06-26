@@ -14,3 +14,9 @@ export const evaluateRegex = (exp) => {
 
   return exp;
 };
+
+export const map = (fn) => (array) => array.map(fn);
+
+export const filter = (fn) => (array) => array.filter(fn);
+
+export const split = (pattern) => (str) => str.split(pattern);

@@ -10,4 +10,6 @@ import { fileURLToPath } from 'url';
   const csvDir = join(__dirname, '../docs/projeto-de-lei.csv');
   const dataBuffer = await readFile(csvDir);
   const data = dataBuffer.toString();
+
+  console.log(data);
 })();
