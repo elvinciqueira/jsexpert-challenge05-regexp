@@ -28,7 +28,7 @@ export class TextProcessorFluentApi {
   }
 
   splitValues() {
-    const filter = R.filter((item) => !!item);
+    const filter = R.filter(Boolean);
     const words = R.split(evaluateRegex(/;/gim));
     const splitWords = R.compose(filter, words);
     const splitContent = R.compose(R.map(splitWords));
