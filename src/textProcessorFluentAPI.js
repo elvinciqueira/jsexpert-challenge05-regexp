@@ -1,5 +1,5 @@
-import { evaluateRegex, map, split, filter } from './util.js';
-
+import { evaluateRegex, map, split, filter, reduce } from './util.js';
+import { Project } from './project.js';
 export class TextProcessorFluentApi {
   #content;
 
@@ -34,6 +34,27 @@ export class TextProcessorFluentApi {
       headers: toArray(words(this.#content.headers)),
       content: this.#content.content.map((word) => toArray(words(word))),
     };
+
+    return this;
+  }
+
+  mapRawObject() {
+    const { content, headers } = this.#content;
+
+    this.#content = content.map((projects) => {
+      return projects.reduce((finalObject, field, index) => {
+        return {
+          ...finalObject,
+          [headers[index]]: field,
+        };
+      }, {});
+    });
+
+    return this;
+  }
+
+  mapProjects() {
+    this.#content = this.#content.map((rawObject) => new Project(rawObject));
 
     return this;
   }

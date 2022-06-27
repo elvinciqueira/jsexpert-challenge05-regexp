@@ -1,1 +1,17 @@
-// TODO: Dê uma olhada no projeto oficial do módulo 06 (Expressões Regulares - RegExp) para implementar este arquivo.
+import { TextProcessorFluentApi } from './textProcessorFluentAPI.js';
+export class TextProcessorFacade {
+  #textProcessorFluentAPI;
+  constructor(text) {
+    this.#textProcessorFluentAPI = new TextProcessorFluentApi(text);
+  }
+
+  getProjectsFromCSV() {
+    return this.#textProcessorFluentAPI
+      .extractHeaders()
+      .extractContent()
+      .splitValues()
+      .mapRawObject()
+      .mapProjects()
+      .build();
+  }
+}

@@ -19,4 +19,6 @@ export const map = (fn) => (array) => array.map(fn);
 
 export const filter = (fn) => (array) => array.filter(fn);
 
+export const reduce = (fn) => (array) => array.reduce(fn);
+
 export const split = (pattern) => (str) => str.split(pattern);
