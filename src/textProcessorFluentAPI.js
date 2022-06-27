@@ -1,4 +1,5 @@
-import { evaluateRegex, map, split, filter, reduce } from './util.js';
+import * as R from 'ramda';
+import { evaluateRegex } from './util.js';
 import { Project } from './project.js';
 export class TextProcessorFluentApi {
   #content;
@@ -27,12 +28,14 @@ export class TextProcessorFluentApi {
   }
 
   splitValues() {
-    const words = split(evaluateRegex(/;/gim));
-    const toArray = filter((item) => !!item);
+    const filter = R.filter((item) => !!item);
+    const words = R.split(evaluateRegex(/;/gim));
+    const splitWords = R.compose(filter, words);
+    const splitContent = R.compose(R.map(splitWords));
 
     this.#content = {
-      headers: toArray(words(this.#content.headers)),
-      content: this.#content.content.map((word) => toArray(words(word))),
+      headers: splitWords(this.#content.headers),
+      content: splitContent(this.#content.content),
     };
 
     return this;
@@ -41,14 +44,15 @@ export class TextProcessorFluentApi {
   mapRawObject() {
     const { content, headers } = this.#content;
 
-    this.#content = content.map((projects) => {
-      return projects.reduce((finalObject, field, index) => {
-        return {
+    this.#content = content.map((projects) =>
+      projects.reduce(
+        (finalObject, field, index) => ({
           ...finalObject,
           [headers[index]]: field,
-        };
-      }, {});
-    });
+        }),
+        {}
+      )
+    );
 
     return this;
   }
